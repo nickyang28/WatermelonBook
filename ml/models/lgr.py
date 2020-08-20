@@ -60,10 +60,9 @@ class LogisticRegression:
             for _ in range(self.max_iter):
                 beta -= self.lr * self._likelihood_1d(X, y, beta)
         else:
+            self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
             X = torch.tensor(X, dtype=torch.float).to(self.device)
             y = torch.tensor(y, dtype=torch.float).to(self.device)
-
-            self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
             net = LogisticNet(X.shape[1]).to(self.device)
             loss = nn.BCELoss()
             optimizer = optim.SGD(net.parameters(), lr=self.lr)
@@ -74,7 +73,8 @@ class LogisticRegression:
                 optimizer.zero_grad()
                 criterion.backward()
                 optimizer.step()
-            beta = np.concatenate(list(param.detach().numpy().reshape(1, -1) for param in net.parameters()), axis=1)
+            beta = np.concatenate(list(param.cpu().detach().numpy().reshape(1, -1)
+                                       for param in net.parameters()), axis=1)
         return beta
 
     def _likelihood_1d(self, X, y, beta):

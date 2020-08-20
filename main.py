@@ -21,7 +21,7 @@ print(lgr.coef_)
 print(lgr.intercept_)
 '''
 
-lgr = LogisticRegression(engine='python', method='newton')
+lgr = LogisticRegression(engine='torch', method='SGD', max_iter=10000)
 lgr.fit(X, y)
 y_pred = lgr.predict(X)
 print(classification_report(y, y_pred))
