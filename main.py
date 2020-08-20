@@ -21,13 +21,11 @@ print(lgr.coef_)
 print(lgr.intercept_)
 '''
 
-lgr = LogisticRegression(engine='torch', method='SGD', max_iter=10000)
+lgr = LogisticRegression()
 lgr.fit(X, y)
 y_pred = lgr.predict(X)
 print(classification_report(y, y_pred))
 print(lgr.coef_)
 print(lgr.intercept_)
 
-# X = np.concatenate((X, np.ones((X.shape[0], 1))), axis=1)
-# print(torch.sigmoid(torch.tensor(X @ lgr.beta.T)))
 
